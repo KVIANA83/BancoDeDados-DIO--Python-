@@ -1,0 +1,117 @@
+--/* E-commerce Logico C: */
+
+CREATE DATABASE E-commerce;
+USE E-commerce;
+
+CREATE TABLE Produto (
+    Id_produto int NOT null AUTO INCREMENT PRIMARY KEY,
+    Categoria VARCHAR (255) NOT null,
+    Descricao VARCHAR  (255) NOT null,
+    Valor FLOAT NOT null 
+);
+
+CREATE TABLE Estoque (
+    Id_estoque int NOT null AUTO INCREMENT PRIMARY KEY,
+    Local VARCHAR (255) NOT null
+);
+
+CREATE TABLE Pedido (
+    Id_pedido int NOT null AUTO INCREMENT PRIMARY KEY,
+    Status BOOLEAN NOT null
+);
+
+CREATE TABLE Fornecedor (
+    id_terceiro_vendedor int NOT null AUTO INCREMENT PRIMARY KEY,
+    Razao_Social VARCHAR (255) NOT null,
+    CNPJ INT NOT null,
+    endereco VARCHAR (255) NOT null,
+    Telefone VARCHAR (255) NOT null,
+    E_mail VARCHAR (255) NOT null,
+    Data_de_nascimento DATE NOT null,
+    fk_Produto_Id_produto INTEGER
+);
+
+CREATE TABLE Tereiro_Vendedor (
+    Id_terceiro_vendedor int NOT null AUTO INCREMENT PRIMARY KEY,
+    Razao_Social VARCHAR (255) NOT null,
+    CNPJ INT NOT null,
+    Endereco VARCHAR (255) NOT null,
+    Telefone VARCHAR (255) NOT null,
+    E_mail VARCHAR (255) NOT null,
+    Data_de_Nascimento DATE NOT null 
+);
+
+CREATE TABLE Cliente (
+    Id_Cliente int NOT null AUTO INCREMENT PRIMARY KEY,
+    Nome_Completo VARCHAR (255) NOT null,
+    CPF INT NOT null,
+    Endereco VARCHAR (255) NOT null,
+    Telefone VARCHAR (255) NOT null,
+    E_mail VARCHAR (255) NOT null,
+    Data_de_Nascimento DATE NOT null 
+);
+
+CREATE TABLE Produto_por_pedido (
+    fk_Pedido_Id_pedido INTEGER,
+    fk_Produto_Id_produto INTEGER
+);
+
+CREATE TABLE Cliente_por_pedido (
+    fk_Cliente_Id_Cliente INTEGER,
+    fk_Pedido_Id_pedido INTEGER
+);
+
+CREATE TABLE Produto_por_Vendedor (
+    fk_Tereiro_Vendedor_Id_terceiro_vendedor INTEGER,
+    fk_Pedido_Id_pedido INTEGER
+);
+
+CREATE TABLE Produto_Estoque (
+    fk_Estoque_Id_estoque INTEGER,
+    fk_Produto_Id_produto INTEGER
+);
+ 
+ALTER TABLE Fornecedor ADD CONSTRAINT FK_Fornecedor_2
+    FOREIGN KEY (fk_Produto_Id_produto)
+    REFERENCES Produto (Id_produto)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_por_pedido ADD CONSTRAINT FK_Produto_por_pedido_1
+    FOREIGN KEY (fk_Pedido_Id_pedido)
+    REFERENCES Pedido (Id_pedido)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_por_pedido ADD CONSTRAINT FK_Produto_por_pedido_2
+    FOREIGN KEY (fk_Produto_Id_produto)
+    REFERENCES Produto (Id_produto)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Cliente_por_pedido ADD CONSTRAINT FK_Cliente_por_pedido_1
+    FOREIGN KEY (fk_Cliente_Id_Cliente)
+    REFERENCES Cliente (Id_Cliente)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Cliente_por_pedido ADD CONSTRAINT FK_Cliente_por_pedido_2
+    FOREIGN KEY (fk_Pedido_Id_pedido)
+    REFERENCES Pedido (Id_pedido)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_por_Vendedor ADD CONSTRAINT FK_Produto_por_Vendedor_1
+    FOREIGN KEY (fk_Tereiro_Vendedor_Id_terceiro_vendedor)
+    REFERENCES Tereiro_Vendedor (Id_terceiro_vendedor)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_por_Vendedor ADD CONSTRAINT FK_Produto_por_Vendedor_2
+    FOREIGN KEY (fk_Pedido_Id_pedido)
+    REFERENCES Pedido (Id_pedido)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_Estoque ADD CONSTRAINT FK_Produto_Estoque_1
+    FOREIGN KEY (fk_Estoque_Id_estoque)
+    REFERENCES Estoque (Id_estoque)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_Estoque ADD CONSTRAINT FK_Produto_Estoque_2
+    FOREIGN KEY (fk_Produto_Id_produto)
+    REFERENCES Produto (Id_produto)
+    ON DELETE RESTRICT;

@@ -1,0 +1,85 @@
+--* Oficina Logico C: */
+
+CREATE DATABASE Oficina;
+
+USE Oficina;
+
+CREATE TABLE Cliente (
+    Id_cliente int NOT null AUTO INCREMENT  PRIMARY KEY,
+    Nome_Completo VARCHAR (255) NOT null,
+    Cpf INT NOT null,
+    Endereco VARCHAR (255) NOT null,
+    Telefone VARCHAR (255) NOT null,
+    E_mail VARCHAR (255) NOT null,
+    Servico VARCHAR (255) NOT null
+);
+
+CREATE TABLE Produto (
+    Id_produto int NOT null AUTO INCREMENT PRIMARY KEY,
+    Descricao VARCHAR (255) NOT null,
+    Valor_produto FLOAT NOT null
+);
+
+CREATE TABLE Veiculo (
+    Id_veiculo int NOT null AUTO INCREMENT PRIMARY KEY,
+    Marca VARCHAR (255) NOT null,
+    Modelo VARCHAR (255) NOT null,
+    Ano DATE NOT null,
+    Cor VARCHAR (255) NOT null,
+    fk_Manutencao_Id_manutencao INTEGER
+);
+
+CREATE TABLE Manutencao (
+    Id_manutencao int NOT null AUTO INCREMENT PRIMARY KEY,
+    Data_entrada DATE NOT null,
+    Data_saida DATE NOT null,
+    Data_prevista DATE NOT null
+);
+
+CREATE TABLE Servico (
+    Id_servico VARCHAR PRIMARY KEY,
+    Descricao VARCHAR (255) NOT null,
+    Valor_servico FLOAT NOT null,
+    Valor_total FLOAT NOT null,
+    fk_Manutencao_Id_manutencao INTEGER
+);
+
+CREATE TABLE Produto_Clientes (
+    fk_Cliente_Id_cliente INTEGER,
+    fk_Produto_Id_produto INTEGER
+);
+
+CREATE TABLE Relacionamento_1 (
+    fk_Cliente_Id_cliente INTEGER,
+    fk_Veiculo_Id_veiculo INTEGER
+);
+ 
+ALTER TABLE Veiculo ADD CONSTRAINT FK_Veiculo_2
+    FOREIGN KEY (fk_Manutencao_Id_manutencao)
+    REFERENCES Manutencao (Id_manutencao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Servico ADD CONSTRAINT FK_Servico_2
+    FOREIGN KEY (fk_Manutencao_Id_manutencao)
+    REFERENCES Manutencao (Id_manutencao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_Clientes ADD CONSTRAINT FK_Produto_Clientes_1
+    FOREIGN KEY (fk_Cliente_Id_cliente)
+    REFERENCES Cliente (Id_cliente)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Produto_Clientes ADD CONSTRAINT FK_Produto_Clientes_2
+    FOREIGN KEY (fk_Produto_Id_produto)
+    REFERENCES Produto (Id_produto)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Relacionamento_1 ADD CONSTRAINT FK_Relacionamento_1_1
+    FOREIGN KEY (fk_Cliente_Id_cliente)
+    REFERENCES Cliente (Id_cliente)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Relacionamento_1 ADD CONSTRAINT FK_Relacionamento_1_2
+    FOREIGN KEY (fk_Veiculo_Id_veiculo)
+    REFERENCES Veiculo (Id_veiculo)
+    ON DELETE RESTRICT;
